@@ -3,7 +3,8 @@ import { Suspense } from "react";
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Toaster } from "@/components/ui/sonner";
-import { ToastHandler } from "@/components/toast-handler";
+import { ToastHandler } from "@/components/toast/toast-handler";
+import { ThemeProvider } from "@/components/theme/theme-provider";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -29,13 +30,21 @@ export default function RootLayout({
     <html
       lang='id'
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
+      suppressHydrationWarning
     >
       <body className='min-h-full flex flex-col'>
-        <Suspense fallback={null}>
-          <ToastHandler />
-        </Suspense>
-        {children}
-        <Toaster position='top-center' richColors />
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          <Suspense fallback={null}>
+            <ToastHandler />
+          </Suspense>
+          {children}
+          <Toaster position='top-center' richColors />
+        </ThemeProvider>
       </body>
     </html>
   );

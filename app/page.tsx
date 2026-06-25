@@ -1,9 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { logout } from "./actions";
 import { Button } from "@/components/ui/button";
-import { LogOut, Plus } from "lucide-react";
+import { Plus } from "lucide-react";
+import { Navbar } from "@/components/navbar/navbar";
 import { useDebts } from "@/hooks/use-debts";
 import { SummaryCards } from "@/components/debts/summary-cards";
 import { DebtList } from "@/components/debts/debt-list";
@@ -50,25 +50,10 @@ export default function Dashboard() {
   };
 
   return (
-    <main className='container mx-auto p-4 max-w-2xl'>
-      {/* Header */}
-      <div className='flex items-center justify-between mb-6'>
-        <h1 className='text-2xl font-bold'>Kasbon</h1>
-
-        <form action={logout}>
-          <Button
-            variant='ghost'
-            size='sm'
-            type='submit'
-            className='text-muted-foreground hover:text-foreground'
-          >
-            <LogOut className='h-4 w-4 mr-2' />
-            Keluar
-          </Button>
-        </form>
-      </div>
-
-      <SummaryCards debts={debts} />
+    <>
+      <Navbar />
+      <main className='container mx-auto p-4 max-w-2xl'>
+        <SummaryCards debts={debts} />
 
       {/* Error state */}
       {error && (
@@ -102,6 +87,7 @@ export default function Dashboard() {
         onSubmit={handleSubmit}
         debt={editingDebt}
       />
-    </main>
+      </main>
+    </>
   );
 }
