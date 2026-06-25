@@ -57,6 +57,7 @@ export const updateDebtSchema = createDebtSchema.partial().extend({
 export const debtFilterSchema = z.object({
   status: z.enum(['all', 'belum', 'lunas']).optional().default('all'),
   type: z.enum(['all', 'owed_to_me', 'i_owe']).optional().default('all'),
+  search: z.string().optional().default(''),
 })
 
 export type CreateDebtInput = z.infer<typeof createDebtSchema>

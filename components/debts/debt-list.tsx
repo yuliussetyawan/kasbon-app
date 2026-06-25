@@ -1,4 +1,3 @@
-// components/debts/debt-list.tsx
 'use client'
 
 import {
@@ -11,7 +10,7 @@ import {
 import { Button } from '@/components/ui/button'
 import { Badge } from '@/components/ui/badge'
 import { Card, CardContent } from '@/components/ui/card'
-import { Check, Pencil, Trash2, Loader2, Inbox } from 'lucide-react'
+import { Check, Undo2, Pencil, Trash2, Loader2, Inbox } from 'lucide-react'
 import { formatRupiah, formatRelativeDate } from '@/utils/format'
 import type { Debt } from '@/utils/database.types'
 import type { DebtFilterInput } from '@/utils/schema'
@@ -150,7 +149,16 @@ function DebtCard({
 
         {/* Actions */}
         <div className="flex items-center gap-1 shrink-0">
-          {!isSettled && (
+          {isSettled ? (
+            <Button
+              variant="ghost"
+              size="icon-sm"
+              onClick={onSettle}
+              title="Batalkan lunas"
+            >
+              <Undo2 className="h-4 w-4 text-orange-500" />
+            </Button>
+          ) : (
             <Button
               variant="ghost"
               size="icon-sm"

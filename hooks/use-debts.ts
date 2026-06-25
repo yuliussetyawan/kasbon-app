@@ -13,7 +13,7 @@ interface UseDebtsReturn {
   createDebt: (data: CreateDebtInput) => Promise<Debt | null>
   updateDebt: (id: string, data: UpdateDebtInput) => Promise<Debt | null>
   deleteDebt: (id: string) => Promise<boolean>
-  markAsSettled: (id: string) => Promise<Debt | null>
+  toggleSettled: (id: string) => Promise<Debt | null>
   refetch: () => void
 }
 
@@ -24,6 +24,7 @@ export function useDebts(): UseDebtsReturn {
   const [filters, setFilters] = useState<DebtFilterInput>({
     status: 'all',
     type: 'all',
+    search: '',
   })
   const [refetchTrigger, setRefetchTrigger] = useState(0)
 
@@ -38,6 +39,7 @@ export function useDebts(): UseDebtsReturn {
         const params = new URLSearchParams()
         if (filters.status !== 'all') params.set('status', filters.status)
         if (filters.type !== 'all') params.set('type', filters.type)
+        if (filters.search) params.set('search', filters.search)
 
         const url = `/api/debts${params.toString() ? '?' + params.toString() : ''}`
         const res = await fetch(url)
@@ -124,8 +126,12 @@ export function useDebts(): UseDebtsReturn {
     }
   }
 
-  const markAsSettled = async (id: string): Promise<Debt | null> => {
-    return updateDebt(id, { settled_at: new Date().toISOString() })
+  const toggleSettled = async (id: string): Promise<Debt | null> => {
+    const debt = debts.find((d) => d.id === id)
+    if (!debt) return null
+
+    const settled_at = debt.settled_at ? null : new Date().toISOString()
+    return updateDebt(id, { settled_at })
   }
 
   return {
@@ -137,7 +143,7 @@ export function useDebts(): UseDebtsReturn {
     createDebt,
     updateDebt,
     deleteDebt,
-    markAsSettled,
+    toggleSettled,
     refetch: () => setRefetchTrigger((n) => n + 1),
   }
 }

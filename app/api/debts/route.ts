@@ -4,7 +4,7 @@ import { createDebtSchema, debtFilterSchema } from '@/utils/schema'
 import type { DebtInsert } from '@/utils/database.types'
 
 /**
- * GET /api/debts?status=all|belum|lunas&type=all|owed_to_me|i_owe
+ * GET /api/debts?status=all|belum|lunas&type=all|owed_to_me|i_owe&search=budi
  */
 export async function GET(request: Request) {
   const supabase = await createClient()
@@ -23,6 +23,7 @@ export async function GET(request: Request) {
   const parsed = debtFilterSchema.safeParse({
     status: searchParams.get('status') ?? 'all',
     type: searchParams.get('type') ?? 'all',
+    search: searchParams.get('search') ?? '',
   })
 
   if (!parsed.success) {
@@ -32,7 +33,7 @@ export async function GET(request: Request) {
     )
   }
 
-  const { status, type } = parsed.data
+  const { status, type, search } = parsed.data
 
   let query = supabase
     .from('debts')
@@ -48,6 +49,10 @@ export async function GET(request: Request) {
     query = query.is('settled_at', null)
   } else if (status === 'lunas') {
     query = query.not('settled_at', 'is', null)
+  }
+
+  if (search) {
+    query = query.ilike('counterpart_name', `%${search}%`)
   }
 
   const { data, error } = await query

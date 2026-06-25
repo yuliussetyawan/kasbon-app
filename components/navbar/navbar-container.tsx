@@ -1,25 +1,41 @@
-'use client'
+"use client";
 
-import { useTheme } from 'next-themes'
-import { Button } from '@/components/ui/button'
+import { useTheme } from "next-themes";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu'
-import { LogOut, Moon, Sun } from 'lucide-react'
-import { logout } from '@/app/actions'
+} from "@/components/ui/dropdown-menu";
+import { LogOut, Moon, Sun } from "lucide-react";
+import { logout } from "@/app/actions";
+import { SearchInput } from "@/components/navbar/search-input";
 
-export function Navbar() {
-  const { setTheme } = useTheme()
+interface NavbarProps {
+  searchValue: string;
+  onSearchChange: (value: string) => void;
+}
+
+export function Navbar({ searchValue, onSearchChange }: NavbarProps) {
+  const { setTheme } = useTheme();
 
   return (
     <header className="border-b bg-background sticky top-0 z-10">
-      <div className="container mx-auto flex items-center justify-between h-12 px-4 max-w-2xl">
-        <h1 className="text-lg font-bold">Kasbon</h1>
+      <div className="container mx-auto flex items-center gap-3 h-12 px-4 max-w-2xl justify-between">
+        <h1 className="text-lg font-bold shrink-0">Kasbon</h1>
 
-        <div className="flex items-center gap-1">
+        {/* Search */}
+        <div className="flex-1 max-w-xs">
+          <SearchInput
+            value={searchValue}
+            onChange={onSearchChange}
+            placeholder="Cari nama..."
+          />
+        </div>
+
+        {/* Actions */}
+        <div className="flex items-center gap-1 shrink-0">
           {/* Theme toggle */}
           <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -30,14 +46,14 @@ export function Navbar() {
               </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-              <DropdownMenuItem onClick={() => setTheme('light')}>
+              <DropdownMenuItem onClick={() => setTheme("light")}>
                 Terang
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme('dark')}>
+              <DropdownMenuItem onClick={() => setTheme("dark")}>
                 Gelap
               </DropdownMenuItem>
-              <DropdownMenuItem onClick={() => setTheme('system')}>
-                Ikut sistem
+              <DropdownMenuItem onClick={() => setTheme("system")}>
+                Sistem
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>
@@ -57,5 +73,5 @@ export function Navbar() {
         </div>
       </div>
     </header>
-  )
+  );
 }
