@@ -1,6 +1,5 @@
 import Link from "next/link";
 import { signup } from "./actions";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { PasswordInput } from "@/components/ui/password-input";
 import { Label } from "@/components/ui/label";
@@ -12,6 +11,7 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { SubmitButton } from "@/components/login-signup/submit-button";
 
 type SearchParams = Promise<{ [key: string]: string | string[] | undefined }>;
 
@@ -31,7 +31,7 @@ export default async function SignupPage(props: {
           </CardDescription>
         </CardHeader>
 
-        <form>
+        <form action={signup}>
           <CardContent className='space-y-4'>
             {errorMessage && (
               <div className='text-sm font-medium text-red-600 bg-red-50 p-3 rounded-md'>
@@ -62,10 +62,10 @@ export default async function SignupPage(props: {
             </div>
           </CardContent>
 
-          <CardFooter className='flex flex-col gap-4'>
-            <Button className='w-full' formAction={signup}>
+          <CardFooter className='flex flex-col gap-4 mt-4'>
+            <SubmitButton className='w-full' loadingText='Mendaftar...'>
               Daftar Sekarang
-            </Button>
+            </SubmitButton>
 
             <div className='text-center text-sm text-muted-foreground'>
               Udah punya akun?{" "}
