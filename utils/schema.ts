@@ -58,6 +58,7 @@ export const debtFilterSchema = z.object({
   status: z.enum(['all', 'belum', 'lunas']).optional().default('all'),
   type: z.enum(['all', 'owed_to_me', 'i_owe']).optional().default('all'),
   search: z.string().optional().default(''),
+  sort: z.enum(['date_desc', 'date_asc']).optional().default('date_desc'),
 })
 
 export type CreateDebtInput = z.infer<typeof createDebtSchema>

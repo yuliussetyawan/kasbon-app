@@ -9,7 +9,7 @@ export interface GroupedDebt {
 
 /**
  * Group debts by counterpart_name.
- * Returns sorted by total amount descending.
+ * Preserves the original order from the API (sorted by date or amount).
  */
 export function groupDebtsByName(debts: Debt[]): GroupedDebt[] {
   const map = new Map<string, Debt[]>()
@@ -30,9 +30,6 @@ export function groupDebtsByName(debts: Debt[]): GroupedDebt[] {
       debts: groupDebts,
     })
   }
-
-  // Sort by total amount descending
-  groups.sort((a, b) => b.totalAmount - a.totalAmount)
 
   return groups
 }

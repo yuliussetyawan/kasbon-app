@@ -9,6 +9,7 @@ import { SummaryCards } from "@/components/debts/summary-cards";
 import { DebtChart } from "@/components/debts/debt-chart";
 import { DebtList } from "@/components/debts/debt-list";
 import { CreateEditDebtDialog } from "@/components/debts/create-edit-debt-dialog";
+import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 import type { Debt } from "@/utils/database.types";
 
 export default function Dashboard() {
@@ -26,6 +27,7 @@ export default function Dashboard() {
 
   const [dialogOpen, setDialogOpen] = useState(false);
   const [editingDebt, setEditingDebt] = useState<Debt | null>(null);
+  const [deleteId, setDeleteId] = useState<string | null>(null);
 
   const handleSearchChange = (search: string) => {
     setFilters({ ...filters, search });
@@ -41,9 +43,14 @@ export default function Dashboard() {
     setDialogOpen(true);
   };
 
-  const handleDelete = async (id: string) => {
-    if (confirm("Yakin mau hapus?")) {
-      await deleteDebt(id);
+  const handleDelete = (id: string) => {
+    setDeleteId(id);
+  };
+
+  const handleConfirmDelete = async () => {
+    if (deleteId) {
+      await deleteDebt(deleteId);
+      setDeleteId(null);
     }
   };
 
@@ -99,6 +106,16 @@ export default function Dashboard() {
           onOpenChange={setDialogOpen}
           onSubmit={handleSubmit}
           debt={editingDebt}
+        />
+
+        <ConfirmDialog
+          open={!!deleteId}
+          onOpenChange={(open) => { if (!open) setDeleteId(null) }}
+          title="Hapus utang piutang?"
+          description="Data yang dihapus tidak bisa dikembalikan."
+          confirmText="Hapus"
+          cancelText="Batal"
+          onConfirm={handleConfirmDelete}
         />
       </main>
     </>

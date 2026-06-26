@@ -51,6 +51,7 @@ export function DebtList({
     <div className="space-y-4">
       {/* Filters */}
       <div className="flex flex-wrap gap-2">
+        {/* Filter by settled */}
         <Select
           value={filters.status}
           onValueChange={(v) =>
@@ -70,6 +71,7 @@ export function DebtList({
           </SelectContent>
         </Select>
 
+        {/* Filter by owe status */}
         <Select
           value={filters.type}
           onValueChange={(v) =>
@@ -83,6 +85,22 @@ export function DebtList({
             <SelectItem value="all">Semua</SelectItem>
             <SelectItem value="owed_to_me">Dihutang ke saya</SelectItem>
             <SelectItem value="i_owe">Saya hutang</SelectItem>
+          </SelectContent>
+        </Select>
+
+        {/* Sort */}
+        <Select
+          value={filters.sort}
+          onValueChange={(v) =>
+            onFiltersChange({ ...filters, sort: v as DebtFilterInput["sort"] })
+          }
+        >
+          <SelectTrigger className="w-35">
+            <SelectValue placeholder="Urutkan" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="date_desc">Terbaru</SelectItem>
+            <SelectItem value="date_asc">Terlama</SelectItem>
           </SelectContent>
         </Select>
       </div>

@@ -25,6 +25,7 @@ export function useDebts(): UseDebtsReturn {
     status: 'all',
     type: 'all',
     search: '',
+    sort: 'date_desc',
   })
   const [refetchTrigger, setRefetchTrigger] = useState(0)
 
@@ -40,9 +41,10 @@ export function useDebts(): UseDebtsReturn {
         if (filters.status !== 'all') params.set('status', filters.status)
         if (filters.type !== 'all') params.set('type', filters.type)
         if (filters.search) params.set('search', filters.search)
+        params.set('sort', filters.sort)
 
         const url = `/api/debts${params.toString() ? '?' + params.toString() : ''}`
-        const res = await fetch(url)
+        const res = await fetch(url, { cache: 'no-store' })
 
         if (!res.ok) {
           const data = await res.json()

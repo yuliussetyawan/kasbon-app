@@ -4,7 +4,7 @@ import { createDebtSchema, debtFilterSchema } from '@/utils/schema'
 import type { DebtInsert } from '@/utils/database.types'
 
 /**
- * GET /api/debts?status=all|belum|lunas&type=all|owed_to_me|i_owe&search=budi
+ * GET /api/debts?status=all|belum|lunas&type=all|owed_to_me|i_owe&search=budi&sort=date_desc
  */
 export async function GET(request: Request) {
   const supabase = await createClient()
@@ -24,6 +24,7 @@ export async function GET(request: Request) {
     status: searchParams.get('status') ?? 'all',
     type: searchParams.get('type') ?? 'all',
     search: searchParams.get('search') ?? '',
+    sort: searchParams.get('sort') ?? 'date_desc',
   })
 
   if (!parsed.success) {
@@ -33,13 +34,14 @@ export async function GET(request: Request) {
     )
   }
 
-  const { status, type, search } = parsed.data
+  const { status, type, search, sort } = parsed.data
+  const ascending = sort === 'date_asc'
 
   let query = supabase
     .from('debts')
     .select('*')
     .eq('user_id', user.id)
-    .order('created_at', { ascending: false })
+    .order('created_at', { ascending })
 
   if (type !== 'all') {
     query = query.eq('type', type)
