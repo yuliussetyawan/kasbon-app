@@ -6,6 +6,7 @@ import { Plus } from "lucide-react";
 import { Navbar } from "@/components/navbar/navbar-container";
 import { useDebts } from "@/hooks/use-debts";
 import { SummaryCards } from "@/components/debts/summary-cards";
+import { DebtChart } from "@/components/debts/debt-chart";
 import { DebtList } from "@/components/debts/debt-list";
 import { CreateEditDebtDialog } from "@/components/debts/create-edit-debt-dialog";
 import type { Debt } from "@/utils/database.types";
@@ -61,6 +62,11 @@ export default function Dashboard() {
       />
       <main className="container mx-auto p-4 max-w-2xl">
         <SummaryCards debts={debts} />
+
+        {/* Chart */}
+        <div className="mt-4">
+          <DebtChart debts={debts} />
+        </div>
 
         {/* Error state */}
         {error && (
