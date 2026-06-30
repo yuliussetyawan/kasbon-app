@@ -16,11 +16,10 @@ import { SearchInput } from "@/components/navbar/search-input";
 import { ConfirmDialog } from "@/components/ui/confirm-dialog";
 
 interface NavbarProps {
-  searchValue: string;
   onSearchChange: (value: string) => void;
 }
 
-export function Navbar({ searchValue, onSearchChange }: NavbarProps) {
+export function Navbar({ onSearchChange }: NavbarProps) {
   const { setTheme } = useTheme();
   const [logoutOpen, setLogoutOpen] = useState(false);
 
@@ -37,7 +36,6 @@ export function Navbar({ searchValue, onSearchChange }: NavbarProps) {
           {/* Search */}
           <div className="flex-1 max-w-xs">
             <SearchInput
-              value={searchValue}
               onChange={onSearchChange}
               placeholder="Cari nama..."
             />

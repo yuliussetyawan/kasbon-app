@@ -1,35 +1,33 @@
 'use client'
 
-import { useRef, useCallback } from 'react'
+import { useState, useCallback } from 'react'
 import { Input } from '@/components/ui/input'
 import { Search, X } from 'lucide-react'
 import { Button } from '@/components/ui/button'
+import { useDebouncedCallback } from '@/hooks/use-debounce'
 
 interface SearchInputProps {
-  value: string
   onChange: (value: string) => void
   placeholder?: string
 }
 
 export function SearchInput({
-  value,
   onChange,
   placeholder = 'Cari nama...',
 }: SearchInputProps) {
-  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null)
+  const [value, setValue] = useState('')
+  const debouncedOnChange = useDebouncedCallback(onChange, 500)
 
   const handleChange = useCallback(
     (newValue: string) => {
-      if (timerRef.current) clearTimeout(timerRef.current)
-      timerRef.current = setTimeout(() => {
-        onChange(newValue)
-      }, 500)
+      setValue(newValue)
+      debouncedOnChange(newValue)
     },
-    [onChange]
+    [debouncedOnChange]
   )
 
   const handleClear = useCallback(() => {
-    if (timerRef.current) clearTimeout(timerRef.current)
+    setValue('')
     onChange('')
   }, [onChange])
 

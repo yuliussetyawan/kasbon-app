@@ -63,10 +63,7 @@ export default function Dashboard() {
 
   return (
     <>
-      <Navbar
-        searchValue={filters.search}
-        onSearchChange={handleSearchChange}
-      />
+      <Navbar onSearchChange={handleSearchChange} />
       <main className="container mx-auto p-4 max-w-2xl">
         <SummaryCards debts={debts} />
 
